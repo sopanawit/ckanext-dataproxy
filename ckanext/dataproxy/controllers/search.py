@@ -92,6 +92,12 @@ class SearchController(ApiController):
         table_fields = self._get_fields(table)
 
         conn = engine.connect()
+
+        if resource.extras['db'] == 'mysql':
+            conn.execute('SET NAMES utf8;')
+            conn.execute('SET CHARACTER SET utf8;')
+            conn.execute('SET character_set_connection=utf8;')
+
         query = text(sql)
 
         start = time.time()
@@ -151,6 +157,12 @@ class SearchController(ApiController):
         table = Table(table_name, meta, autoload=True, schema=schema_name)
 
         conn = engine.connect()
+
+        if resource.extras['db'] == 'mysql':
+            conn.execute('SET NAMES utf8;')
+            conn.execute('SET CHARACTER SET utf8;')
+            conn.execute('SET character_set_connection=utf8;')
+
         select_query = select([table])
 
         filters = request_data.get('filters', None)
